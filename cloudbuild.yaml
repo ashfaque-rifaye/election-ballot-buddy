@@ -8,10 +8,10 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/election-assistant/election-assistant-api:latest'
+      - 'gcr.io/$PROJECT_ID/election-assistant-api:latest'
       - '-f'
       - 'server/Dockerfile'
       - '.'
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/election-assistant/election-assistant-api:latest'
+  - 'gcr.io/$PROJECT_ID/election-assistant-api:latest'
