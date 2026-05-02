@@ -10,7 +10,7 @@ import { Session, ChatResponse, Card, Message } from '../../shared/types';
 
 const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'election-assistant';
 const LOCATION = process.env.VERTEX_AI_LOCATION || 'us-central1';
-const MODEL_ID = process.env.VERTEX_AI_MODEL || 'gemini-1.5-flash';
+const MODEL_ID = process.env.VERTEX_AI_MODEL || 'gemini-1.5-pro';
 
 const vertexAI = new VertexAI({ project: PROJECT_ID, location: LOCATION });
 
@@ -40,6 +40,12 @@ Card Format (use JSON blocks when applicable):
 - For FAQs: {"type":"faq","question":"...","answer":"..."}
 - For polling locations: {"type":"polling-location","name":"...","address":"...","mapsUrl":"..."}
 - For reminders: {"type":"reminder","phaseName":"...","date":"...","description":"..."}
+- For images: {"type":"image","url":"https://pollinations.ai/p/[PROMPT_KEYWORDS]?width=800&height=600&model=flux","alt":"...","caption":"..."}
+
+Always provide rich, dynamic UI cards when relevant. For example:
+- Use images to visualize voting processes, patriotic themes, or infographics.
+- Use polling locations if the user asks where to vote.
+- Use reminders for important deadlines.
 
 Wrap card JSON in \`\`\`card blocks when including them in responses.`;
 
@@ -78,7 +84,7 @@ function extractCards(text: string): Card[] {
   while ((match = cardRegex.exec(text)) !== null) {
     try {
       const card = JSON.parse(match[1].trim());
-      if (card.type === 'faq' || card.type === 'polling-location' || card.type === 'reminder') {
+      if (card.type === 'faq' || card.type === 'polling-location' || card.type === 'reminder' || card.type === 'image') {
         cards.push(card as Card);
       }
     } catch {

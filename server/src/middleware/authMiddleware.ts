@@ -109,6 +109,35 @@ export async function authMiddleware(
 
     const token = authHeader.substring(7);
 
+    // Guest Demo mode: allow mock JWTs for the demo experience
+    if (token.includes('.') && token.split('.').length === 3) {
+      const payload = decodeJwtPayload(token);
+      if (payload && payload.sub === 'demo') {
+        console.log(`[AuthMiddleware] Authorizing Guest Demo user: ${payload.email}`);
+        const email = (payload.email as string) || 'guest@election.app';
+        const role = assignRole(email);
+        req.user = {
+          uid: payload.sub as string,
+          email,
+          role,
+        };
+
+        if (!isAuthorized(role, req.method, req.path)) {
+          console.warn(`[AuthMiddleware] Demo user unauthorized for ${req.method} ${req.path}`);
+          res.status(403).json({
+            error: {
+              code: 403,
+              message: 'Access denied. Demo user role restricted.',
+            },
+          });
+          return;
+        }
+
+        next();
+        return;
+      }
+    }
+
     // Dev mode: when no GOOGLE_CLIENT_ID is configured, accept decoded JWT
     if (!GOOGLE_CLIENT_ID) {
       const payload = decodeJwtPayload(token);

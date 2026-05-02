@@ -104,9 +104,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const startDemo = useCallback(() => {
-    const demoUser: User = { uid: 'demo', email: 'guest@election.app', role: 'voter' };
-    setAuthState({ user: demoUser, token: 'demo-token', isAuthenticated: true, isLoading: false });
-    sessionStorage.setItem('auth_token', 'demo-token');
+    const demoPayload = { sub: 'demo', email: 'guest@election.app', role: 'voter' };
+    const mockToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${btoa(JSON.stringify(demoPayload))}.signature`;
+    
+    setAuthState({ user: demoPayload, token: mockToken, isAuthenticated: true, isLoading: false });
+    sessionStorage.setItem('auth_token', mockToken);
   }, []);
 
   return (

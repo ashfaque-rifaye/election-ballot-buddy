@@ -30,7 +30,7 @@ gcloud run deploy $SERVICE_NAME \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
-  --set-env-vars "GOOGLE_CLOUD_PROJECT=$PROJECT_ID,VERTEX_AI_LOCATION=$REGION,VERTEX_AI_MODEL=gemini-1.5-flash,GCS_BUCKET_NAME=election-assistant-data,ADMIN_EMAILS=ashfaque.rifaye94@gmail.com" \
+  --set-env-vars "GOOGLE_CLOUD_PROJECT=$PROJECT_ID,VERTEX_AI_LOCATION=$REGION,VERTEX_AI_MODEL=gemini-1.5-flash-001,GCS_BUCKET_NAME=election-assistant-data,ADMIN_EMAILS=ashfaque.rifaye94@gmail.com" \
   --project $PROJECT_ID
 
 # Get the Cloud Run URL

@@ -6,7 +6,7 @@
  * for rich content including inline card components.
  */
 import React from 'react';
-import { Message, Card, ReminderCard as ReminderCardType } from '@shared/types';
+import { Message, Card, ReminderCard as ReminderCardType, ImageCard as ImageCardType } from '@shared/types';
 import FAQCard from './FAQCard';
 import PollingLocationCard from './PollingLocationCard';
 import ReminderCard from './ReminderCard';
@@ -28,6 +28,33 @@ function renderCard(
       return <PollingLocationCard key={`polling-${index}`} card={card} />;
     case 'reminder':
       return <ReminderCard key={`reminder-${index}`} card={card} onSetReminder={onSetReminder} />;
+    case 'image':
+      return (
+        <div 
+          key={`img-${index}`} 
+          style={{ 
+            margin: '12px 0', 
+            borderRadius: '16px', 
+            overflow: 'hidden', 
+            border: '1px solid var(--outline)',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            animation: 'scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          }}
+        >
+          <img 
+            src={card.url} 
+            alt={card.alt} 
+            style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '400px', objectFit: 'cover' }} 
+          />
+          {card.caption && (
+            <div style={{ padding: '10px 14px', fontSize: '0.8rem', color: 'var(--on-surface-secondary)', borderTop: '1px solid var(--outline)' }}>
+              <span style={{ marginRight: '6px' }}>✨</span>
+              {card.caption}
+            </div>
+          )}
+        </div>
+      );
     default:
       return null;
   }

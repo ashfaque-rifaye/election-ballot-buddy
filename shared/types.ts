@@ -42,7 +42,14 @@ export interface ReminderCard {
   calendarEventId?: string;
 }
 
-export type Card = FAQCard | PollingLocationCard | ReminderCard;
+export interface ImageCard {
+  type: 'image';
+  url: string;
+  alt: string;
+  caption?: string;
+}
+
+export type Card = FAQCard | PollingLocationCard | ReminderCard | ImageCard;
 
 // ─── Messages ────────────────────────────────────────────────────────────────
 

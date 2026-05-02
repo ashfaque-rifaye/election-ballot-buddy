@@ -44,9 +44,12 @@ async function apiRequest<T>(
     const message = errorData?.error?.message || `Request failed with status ${response.status}`;
 
     if (response.status === 401) {
-      sessionStorage.removeItem('auth_token');
-      window.location.href = '/';
-      throw new Error('Session expired. Please sign in again.');
+      const token = getAuthToken();
+      if (token && !token.includes('.eyJzdWIiOiJkZW1vI')) {
+        sessionStorage.removeItem('auth_token');
+        window.location.href = '/';
+      }
+      throw new Error('Authentication failed. Please sign in again.');
     }
 
     throw new Error(message);
