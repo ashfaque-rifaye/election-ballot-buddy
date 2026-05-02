@@ -1,0 +1,110 @@
+{
+  "id": "national-2024",
+  "format": "national",
+  "faqs": [
+    {
+      "id": "faq-reg-1",
+      "question": "How do I register to vote?",
+      "answer": "You can register to vote online through your state's election website, by mail using the National Voter Registration Form, or in person at your local election office or DMV. Most states require registration at least 30 days before the election.",
+      "phase": "registration",
+      "tags": ["registration", "getting-started", "how-to"]
+    },
+    {
+      "id": "faq-reg-2",
+      "question": "What documents do I need to register?",
+      "answer": "Typically you need a valid government-issued ID (driver's license or state ID), your Social Security number, and proof of residency such as a utility bill or bank statement.",
+      "phase": "registration",
+      "tags": ["registration", "documents", "requirements"]
+    },
+    {
+      "id": "faq-camp-1",
+      "question": "What are the campaign finance rules?",
+      "answer": "Federal campaigns must report all contributions and expenditures to the FEC. Individual contribution limits apply per election cycle. Super PACs can raise unlimited funds but cannot coordinate directly with campaigns.",
+      "phase": "campaigning",
+      "tags": ["campaigning", "finance", "rules"]
+    },
+    {
+      "id": "faq-vote-1",
+      "question": "Can I vote by mail?",
+      "answer": "Most states offer some form of mail-in or absentee voting. Some states require an excuse, while others allow no-excuse absentee voting. Check your state's specific rules and deadlines.",
+      "phase": "voting",
+      "tags": ["voting", "mail-in", "absentee"]
+    },
+    {
+      "id": "faq-vote-2",
+      "question": "What should I bring to the polling station?",
+      "answer": "Requirements vary by state. Many states require a valid photo ID. Some accept utility bills or bank statements. Check your state's voter ID requirements before election day.",
+      "phase": "voting",
+      "tags": ["voting", "polling-station", "id-requirements"]
+    },
+    {
+      "id": "faq-count-1",
+      "question": "How are votes counted?",
+      "answer": "Votes are counted at the precinct level using optical scanners or hand counting. Results are then reported to county and state election offices. The process includes bipartisan observers and multiple verification steps.",
+      "phase": "counting",
+      "tags": ["counting", "process", "verification"]
+    },
+    {
+      "id": "faq-cert-1",
+      "question": "When are election results certified?",
+      "answer": "Certification timelines vary by state but typically occur within 2-4 weeks after election day. The process includes canvassing, auditing, and official certification by state election boards.",
+      "phase": "certification",
+      "tags": ["certification", "results", "timeline"]
+    }
+  ],
+  "milestones": [
+    {
+      "id": "ms-reg-open",
+      "phaseName": "Registration Opens",
+      "date": "2024-06-01T00:00:00.000Z",
+      "description": "Voter registration opens for the upcoming national election."
+    },
+    {
+      "id": "ms-reg-deadline",
+      "phaseName": "Registration Deadline",
+      "date": "2024-10-07T00:00:00.000Z",
+      "description": "Last day to register to vote in most states."
+    },
+    {
+      "id": "ms-early-voting",
+      "phaseName": "Early Voting Begins",
+      "date": "2024-10-21T00:00:00.000Z",
+      "description": "Early in-person voting begins in participating states."
+    },
+    {
+      "id": "ms-election-day",
+      "phaseName": "Election Day",
+      "date": "2024-11-05T00:00:00.000Z",
+      "description": "National election day. Polls open from 6 AM to 8 PM in most states."
+    },
+    {
+      "id": "ms-counting",
+      "phaseName": "Vote Counting",
+      "date": "2024-11-06T00:00:00.000Z",
+      "description": "Official vote counting and tabulation begins nationwide."
+    },
+    {
+      "id": "ms-certification",
+      "phaseName": "Results Certification",
+      "date": "2024-12-11T00:00:00.000Z",
+      "description": "States certify their official election results."
+    }
+  ],
+  "pollingStations": [
+    {
+      "id": "ps-1",
+      "name": "City Hall Community Center",
+      "address": "100 Main Street, Springfield, IL 62701",
+      "latitude": 39.7817,
+      "longitude": -89.6501
+    },
+    {
+      "id": "ps-2",
+      "name": "Lincoln Library Polling Station",
+      "address": "326 S 7th Street, Springfield, IL 62701",
+      "latitude": 39.7956,
+      "longitude": -89.6439
+    }
+  ],
+  "lastUpdated": "2024-01-15T00:00:00.000Z"
+}

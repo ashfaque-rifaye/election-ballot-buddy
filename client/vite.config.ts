@@ -1,0 +1,29 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+
+/**
+ * Vite Configuration for Election Assistant Client
+ * Built with Google Antigravity & Vertex AI
+ */
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@shared': path.resolve(__dirname, '../shared'),
+    },
+  },
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+  },
+});

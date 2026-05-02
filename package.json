@@ -1,0 +1,17 @@
+{
+  "name": "election-assistant",
+  "version": "1.0.0",
+  "description": "Election Assistant - Interactive Agentic Flow with Google Antigravity & Vertex AI",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:server && npm run build:client",
+    "test:server": "cd server && npm test",
+    "test:client": "cd client && npm test",
+    "test": "npm run test:server && npm run test:client"
+  },
+  "keywords": ["election", "vertex-ai", "google-cloud", "antigravity", "gemini"],
+  "license": "MIT"
+}
