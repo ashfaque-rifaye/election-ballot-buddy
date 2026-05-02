@@ -10,6 +10,27 @@ import { PollingStationEntry } from '../../shared/types';
 const MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
 const PLACES_API_URL = 'https://maps.googleapis.com/maps/api/place';
 
+interface GeocodeResponse {
+  status: string;
+  results: Array<{
+    geometry: {
+      location: { lat: number; lng: number };
+    };
+  }>;
+}
+
+interface PlacesResponse {
+  status: string;
+  results: Array<{
+    place_id: string;
+    name: string;
+    vicinity: string;
+    geometry: {
+      location: { lat: number; lng: number };
+    };
+  }>;
+}
+
 /**
  * Geocode a location string to latitude/longitude coordinates.
  */
@@ -21,7 +42,7 @@ async function geocodeLocation(
   )}&key=${MAPS_API_KEY}`;
 
   const response = await fetch(url);
-  const data = await response.json();
+  const data = (await response.json()) as GeocodeResponse;
 
   if (data.status !== 'OK' || !data.results || data.results.length === 0) {
     throw new Error(`Unable to geocode location: ${location}`);
@@ -46,7 +67,7 @@ export async function findPollingStations(
     const url = `${PLACES_API_URL}/nearbysearch/json?location=${coords.lat},${coords.lng}&radius=5000&keyword=polling+station+voting&key=${MAPS_API_KEY}`;
 
     const response = await fetch(url);
-    const data = await response.json();
+    const data = (await response.json()) as PlacesResponse;
 
     if (data.status === 'ZERO_RESULTS' || !data.results || data.results.length === 0) {
       return [];
@@ -56,20 +77,13 @@ export async function findPollingStations(
       throw new Error(`Google Maps API error: ${data.status}`);
     }
 
-    return data.results.map(
-      (place: {
-        place_id: string;
-        name: string;
-        vicinity: string;
-        geometry: { location: { lat: number; lng: number } };
-      }) => ({
-        id: place.place_id,
-        name: place.name,
-        address: place.vicinity || 'Address not available',
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      })
-    );
+    return data.results.map((place) => ({
+      id: place.place_id,
+      name: place.name,
+      address: place.vicinity || 'Address not available',
+      latitude: place.geometry.location.lat,
+      longitude: place.geometry.location.lng,
+    }));
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Unknown Maps API error';

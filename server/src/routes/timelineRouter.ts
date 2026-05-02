@@ -9,7 +9,7 @@ import { Router, Request, Response } from 'express';
 import { validationMiddleware } from '../middleware/validationMiddleware';
 import { getDataset } from '../services/storageService';
 import { sortMilestones } from '../utils/milestoneSort';
-import { ElectionFormat, Milestone } from '../../shared/types';
+import { ElectionFormat, Milestone, MilestoneEntry } from '../../shared/types';
 
 const router = Router();
 
@@ -35,7 +35,7 @@ router.get(
       const dataset = await getDataset(format as ElectionFormat);
 
       // Convert MilestoneEntry to Milestone with format
-      const milestones: Milestone[] = dataset.milestones.map((entry) => ({
+      const milestones: Milestone[] = dataset.milestones.map((entry: MilestoneEntry) => ({
         id: entry.id,
         phaseName: entry.phaseName,
         date: entry.date,

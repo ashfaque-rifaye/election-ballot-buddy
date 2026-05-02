@@ -1,0 +1,17 @@
+# Election Assistant - Cloud Build Configuration
+# Built with Google Antigravity & Vertex AI
+#
+# Builds the backend Docker image from the project root context.
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/election-assistant/election-assistant-api:latest'
+      - '-f'
+      - 'server/Dockerfile'
+      - '.'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/election-assistant/election-assistant-api:latest'

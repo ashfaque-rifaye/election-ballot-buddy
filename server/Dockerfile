@@ -5,17 +5,18 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
-# Copy shared types
+# Copy shared types (project root)
 COPY shared/ ./shared/
 
-# Copy server source
+# Copy server source and shared re-export
 COPY server/package*.json ./server/
 COPY server/tsconfig.json ./server/
 COPY server/src/ ./server/src/
+COPY server/shared/ ./server/shared/
 
-# Install dependencies and build
+# Install ALL dependencies (including devDependencies for TypeScript build)
 WORKDIR /app/server
-RUN npm ci --only=production && npm run build
+RUN npm ci && npm run build
 
 # Production stage
 FROM node:20-slim
@@ -24,8 +25,10 @@ WORKDIR /app
 
 # Copy built artifacts
 COPY --from=builder /app/server/dist ./dist
-COPY --from=builder /app/server/node_modules ./node_modules
-COPY --from=builder /app/server/package.json ./
+COPY --from=builder /app/server/package*.json ./
+
+# Install only production dependencies
+RUN npm ci --omit=dev
 
 # Security: run as non-root user
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
@@ -35,4 +38,4 @@ USER appuser
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/server/src/index.js"]

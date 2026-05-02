@@ -25,7 +25,7 @@ declare global {
 }
 
 export default function LoginView() {
-  const { signIn } = useAuth();
+  const { signIn, startDemo } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   const handleCredentialResponse = useCallback(
@@ -82,16 +82,18 @@ export default function LoginView() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        backgroundColor: '#f8f9fa',
+        backgroundColor: 'transparent',
         padding: '2rem',
       }}
     >
       <div
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--surface-variant)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid var(--outline)',
           borderRadius: '12px',
           padding: '3rem',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+          boxShadow: 'var(--shadow-lg)',
           maxWidth: '440px',
           width: '100%',
           textAlign: 'center',
@@ -100,7 +102,7 @@ export default function LoginView() {
         <h1
           style={{
             fontSize: '1.75rem',
-            color: '#1a73e8',
+            color: 'var(--primary)',
             marginBottom: '0.5rem',
           }}
         >
@@ -108,16 +110,25 @@ export default function LoginView() {
         </h1>
         <p
           style={{
-            color: '#5f6368',
+            color: 'var(--on-surface-secondary)',
             marginBottom: '2rem',
             fontSize: '0.95rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px'
           }}
         >
-          Powered by Google Antigravity &amp; Vertex AI
+          <span style={{ 
+            background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontWeight: 700 
+          }}>Powered by ✨ AI</span> | Google Vertex AI
         </p>
         <p
           style={{
-            color: '#3c4043',
+            color: 'var(--on-surface)',
             marginBottom: '1.5rem',
             lineHeight: 1.6,
           }}
@@ -132,8 +143,8 @@ export default function LoginView() {
             role="alert"
             aria-live="assertive"
             style={{
-              backgroundColor: '#fce8e6',
-              color: '#c5221f',
+              backgroundColor: 'var(--error)',
+              color: '#ffffff',
               padding: '0.75rem 1rem',
               borderRadius: '8px',
               marginBottom: '1rem',
@@ -154,9 +165,38 @@ export default function LoginView() {
           }}
         />
 
+        <button
+          onClick={startDemo}
+          style={{
+            width: '100%',
+            maxWidth: '300px',
+            padding: '12px 24px',
+            background: 'linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(52, 168, 83, 0.15))',
+            border: '1px solid rgba(66, 133, 244, 0.4)',
+            color: 'var(--primary)',
+            borderRadius: 'var(--radius-sm)',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all var(--transition)',
+            margin: '0 auto',
+            display: 'block',
+            backdropFilter: 'blur(10px)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(66, 133, 244, 0.25), rgba(52, 168, 83, 0.25))';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(52, 168, 83, 0.15))';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          Start Guest Demo
+        </button>
+
         <p
           style={{
-            color: '#80868b',
+            color: 'var(--on-surface-tertiary)',
             fontSize: '0.75rem',
             marginTop: '1.5rem',
           }}

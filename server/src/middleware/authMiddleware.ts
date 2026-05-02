@@ -4,6 +4,7 @@
  *
  * Validates Google Identity tokens, assigns user roles,
  * and enforces role-based access control on API endpoints.
+ * Supports dev mode when GOOGLE_CLIENT_ID is not configured.
  */
 import { Request, Response, NextFunction } from 'express';
 import { OAuth2Client } from 'google-auth-library';
@@ -41,7 +42,6 @@ export const ROUTE_PERMISSIONS: Record<string, UserRole[]> = {
 
 /**
  * Determine if a role is authorized for a given endpoint.
- * Property 7: Voters access public endpoints; admins access all.
  */
 export function isAuthorized(
   role: UserRole,
@@ -50,33 +50,44 @@ export function isAuthorized(
 ): boolean {
   const routeKey = `${method.toUpperCase()} ${path}`;
 
-  // Check exact match first
   if (ROUTE_PERMISSIONS[routeKey]) {
     return ROUTE_PERMISSIONS[routeKey].includes(role);
   }
 
-  // Check prefix matches for nested routes
   for (const [pattern, roles] of Object.entries(ROUTE_PERMISSIONS)) {
     if (routeKey.startsWith(pattern)) {
       return roles.includes(role);
     }
   }
 
-  // Default: allow voters and admins for unregistered public routes
   return true;
 }
 
 /**
  * Determine user role based on email.
- * Administrators are configured via ADMIN_EMAILS environment variable.
  */
 function assignRole(email: string): UserRole {
   return ADMIN_EMAILS.includes(email.toLowerCase()) ? 'administrator' : 'voter';
 }
 
 /**
+ * Decode a JWT payload without verification (for dev mode only).
+ */
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf-8'));
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Authentication middleware.
  * Validates the Google Identity token from the Authorization header.
+ * Falls back to dev mode when GOOGLE_CLIENT_ID is not configured.
  */
 export async function authMiddleware(
   req: AuthenticatedRequest,
@@ -98,6 +109,39 @@ export async function authMiddleware(
 
     const token = authHeader.substring(7);
 
+    // Dev mode: when no GOOGLE_CLIENT_ID is configured, accept decoded JWT
+    if (!GOOGLE_CLIENT_ID) {
+      const payload = decodeJwtPayload(token);
+      if (payload && payload.email && payload.sub) {
+        const email = payload.email as string;
+        const role = assignRole(email);
+        req.user = {
+          uid: payload.sub as string,
+          email,
+          role,
+        };
+
+        if (!isAuthorized(role, req.method, req.path)) {
+          res.status(403).json({
+            error: {
+              code: 403,
+              message: 'Access denied. You do not have permission to access this resource.',
+            },
+          });
+          return;
+        }
+
+        next();
+        return;
+      }
+
+      res.status(401).json({
+        error: { code: 401, message: 'Invalid dev token.' },
+      });
+      return;
+    }
+
+    // Production mode: verify with Google OAuth
     const ticket = await oauthClient.verifyIdToken({
       idToken: token,
       audience: GOOGLE_CLIENT_ID,
@@ -115,7 +159,6 @@ export async function authMiddleware(
       return;
     }
 
-    // Check token expiration
     const now = Math.floor(Date.now() / 1000);
     if (payload.exp && payload.exp < now) {
       res.status(401).json({
@@ -129,14 +172,12 @@ export async function authMiddleware(
 
     const role = assignRole(payload.email);
 
-    // Attach user info to request
     req.user = {
       uid: payload.sub,
       email: payload.email,
       role,
     };
 
-    // Check authorization for this endpoint
     if (!isAuthorized(role, req.method, req.path)) {
       res.status(403).json({
         error: {

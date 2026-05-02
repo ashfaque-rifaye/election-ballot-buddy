@@ -50,46 +50,50 @@ export default function ReminderCard({ card, onSetReminder }: ReminderCardProps)
       role="region"
       aria-label={`Reminder: ${card.phaseName} on ${formattedDate}`}
       style={{
-        backgroundColor: '#e6f4ea',
-        borderRadius: '8px',
-        padding: '12px 16px',
+        backgroundColor: 'var(--surface-variant)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: '10px',
+        padding: '14px 16px',
         margin: '8px 0',
-        border: '1px solid #ceead6',
+        border: '1px solid var(--accent-light)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-        <span aria-hidden="true" style={{ fontSize: '1.2rem' }}>📅</span>
-        <strong style={{ color: '#137333', fontSize: '0.95rem' }}>{card.phaseName}</strong>
+        <span aria-hidden="true" style={{ fontSize: '1.1rem' }}>📅</span>
+        <strong style={{ color: 'var(--accent)', fontSize: '0.9rem' }}>{card.phaseName}</strong>
       </div>
-      <p style={{ color: '#3c4043', margin: '4px 0', fontSize: '0.875rem' }}>
+      <p style={{ color: 'var(--primary)', margin: '4px 0', fontSize: '0.825rem', fontWeight: 500, paddingLeft: '28px' }}>
         {formattedDate}
       </p>
-      <p style={{ color: '#5f6368', margin: '4px 0 8px 0', fontSize: '0.875rem' }}>
+      <p style={{ color: 'var(--on-surface-secondary)', margin: '4px 0 10px 0', fontSize: '0.85rem', paddingLeft: '28px' }}>
         {card.description}
       </p>
-      <button
-        onClick={handleSetReminder}
-        onKeyDown={handleKeyDown}
-        disabled={isSettingReminder || reminderSet}
-        aria-label={
-          reminderSet
-            ? `Reminder already set for ${card.phaseName}`
-            : `Set reminder for ${card.phaseName} on ${formattedDate}`
-        }
-        style={{
-          backgroundColor: reminderSet ? '#ceead6' : '#1a73e8',
-          color: reminderSet ? '#137333' : '#ffffff',
-          border: 'none',
-          borderRadius: '6px',
-          padding: '8px 16px',
-          cursor: reminderSet ? 'default' : 'pointer',
-          fontSize: '0.875rem',
-          fontWeight: 500,
-        }}
-        tabIndex={0}
-      >
-        {isSettingReminder ? 'Setting...' : reminderSet ? '✓ Reminder Set' : '🔔 Set Reminder'}
-      </button>
+      <div style={{ paddingLeft: '28px' }}>
+        <button
+          onClick={handleSetReminder}
+          onKeyDown={handleKeyDown}
+          disabled={isSettingReminder || reminderSet}
+          aria-label={
+            reminderSet
+              ? `Reminder already set for ${card.phaseName}`
+              : `Set reminder for ${card.phaseName} on ${formattedDate}`
+          }
+          style={{
+            backgroundColor: reminderSet ? '#C8E6C9' : '#34A853',
+            color: reminderSet ? '#1B5E20' : '#ffffff',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            cursor: reminderSet || isSettingReminder ? 'default' : 'pointer',
+            fontSize: '0.825rem',
+            fontWeight: 600,
+            transition: 'all 200ms ease',
+          }}
+          tabIndex={0}
+        >
+          {isSettingReminder ? 'Setting...' : reminderSet ? '✓ Reminder Set' : '🔔 Set Reminder'}
+        </button>
+      </div>
     </div>
   );
 }

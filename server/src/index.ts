@@ -5,6 +5,7 @@
  * Starts the Express server on the configured port.
  * Deployed to Google Cloud Run.
  */
+import 'dotenv/config';
 import app from './app';
 
 const PORT = parseInt(process.env.PORT || '8080', 10);

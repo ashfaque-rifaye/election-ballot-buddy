@@ -4,7 +4,6 @@
  *
  * Renders a single chat message (user or agent) with support
  * for rich content including inline card components.
- * Property 8: Correct React component rendered for each card type.
  */
 import React from 'react';
 import { Message, Card, ReminderCard as ReminderCardType } from '@shared/types';
@@ -17,9 +16,6 @@ interface MessageBubbleProps {
   onSetReminder?: (card: ReminderCardType) => Promise<void>;
 }
 
-/**
- * Render the appropriate card component based on card type.
- */
 function renderCard(
   card: Card,
   index: number,
@@ -48,25 +44,49 @@ export default function MessageBubble({ message, onSetReminder }: MessageBubbleP
       style={{
         display: 'flex',
         justifyContent: isUser ? 'flex-end' : 'flex-start',
-        marginBottom: '12px',
-        padding: '0 16px',
+        marginBottom: '16px',
+        animation: 'fadeIn 0.3s ease-out',
       }}
     >
+      {!isUser && (
+        <div
+          style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '0.7rem',
+            color: '#fff',
+            flexShrink: 0,
+            marginRight: '10px',
+            marginTop: '2px',
+          }}
+          aria-hidden="true"
+        >
+          AI
+        </div>
+      )}
       <div
         style={{
-          maxWidth: '75%',
-          backgroundColor: isUser ? '#1a73e8' : '#f1f3f4',
-          color: isUser ? '#ffffff' : '#3c4043',
-          borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-          padding: '12px 16px',
-          fontSize: '0.925rem',
-          lineHeight: 1.6,
+          maxWidth: '70%',
+          backgroundColor: isUser ? 'var(--primary)' : 'var(--surface-variant)',
+          backdropFilter: isUser ? 'none' : 'blur(16px)',
+          color: isUser ? '#ffffff' : 'var(--on-surface)',
+          borderRadius: isUser ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
+          padding: '12px 18px',
+          fontSize: '0.9rem',
+          lineHeight: 1.65,
+          boxShadow: isUser ? 'none' : '0 1px 3px rgba(60,64,67,0.08)',
+          border: isUser ? 'none' : '1px solid var(--outline)',
         }}
       >
         <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{message.content}</p>
 
         {message.cards && message.cards.length > 0 && (
-          <div className="message-cards" style={{ marginTop: '8px' }}>
+          <div className="message-cards" style={{ marginTop: '12px' }}>
             {message.cards.map((card, index) => renderCard(card, index, onSetReminder))}
           </div>
         )}

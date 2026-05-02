@@ -30,11 +30,13 @@ export default function FAQCard({ card }: FAQCardProps) {
       role="region"
       aria-label={`FAQ: ${card.question}`}
       style={{
-        backgroundColor: '#e8f0fe',
-        borderRadius: '8px',
-        padding: '12px 16px',
+        backgroundColor: 'var(--surface-variant)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: '10px',
+        padding: '14px 16px',
         margin: '8px 0',
-        border: '1px solid #d2e3fc',
+        border: '1px solid var(--primary-light)',
+        transition: 'all 200ms ease',
       }}
     >
       <button
@@ -49,16 +51,30 @@ export default function FAQCard({ card }: FAQCardProps) {
           width: '100%',
           textAlign: 'left',
           padding: 0,
-          fontSize: '0.95rem',
+          fontSize: '0.875rem',
           fontWeight: 600,
-          color: '#1a73e8',
+          color: 'var(--primary)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          gap: '8px',
         }}
       >
-        <span>{card.question}</span>
-        <span aria-hidden="true">{expanded ? '▲' : '▼'}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span aria-hidden="true" style={{ fontSize: '0.9rem' }}>❓</span>
+          {card.question}
+        </span>
+        <span
+          aria-hidden="true"
+          style={{
+            transition: 'transform 200ms ease',
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            fontSize: '0.7rem',
+            flexShrink: 0,
+          }}
+        >
+          ▼
+        </span>
       </button>
       {expanded && (
         <div
@@ -66,10 +82,12 @@ export default function FAQCard({ card }: FAQCardProps) {
           role="region"
           aria-label="Answer"
           style={{
-            marginTop: '8px',
-            color: '#3c4043',
-            lineHeight: 1.6,
-            fontSize: '0.875rem',
+            marginTop: '10px',
+            paddingTop: '10px',
+            borderTop: '1px solid var(--outline)',
+            color: 'var(--on-surface-secondary)',
+            lineHeight: 1.65,
+            fontSize: '0.85rem',
           }}
         >
           {card.answer}

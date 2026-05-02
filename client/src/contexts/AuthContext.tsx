@@ -18,6 +18,7 @@ interface AuthState {
 interface AuthContextType extends AuthState {
   signIn: (credential: string) => Promise<void>;
   signOut: () => void;
+  startDemo: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -102,8 +103,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const startDemo = useCallback(() => {
+    const demoUser: User = { uid: 'demo', email: 'guest@election.app', role: 'voter' };
+    setAuthState({ user: demoUser, token: 'demo-token', isAuthenticated: true, isLoading: false });
+    sessionStorage.setItem('auth_token', 'demo-token');
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ ...authState, signIn, signOut }}>
+    <AuthContext.Provider value={{ ...authState, signIn, signOut, startDemo }}>
       {children}
     </AuthContext.Provider>
   );
