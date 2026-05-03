@@ -104,10 +104,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const startDemo = useCallback(() => {
-    const demoPayload = { sub: 'demo', email: 'guest@election.app', role: 'voter' };
+    const demoPayload = { sub: 'demo', email: 'guest@election.app', role: 'voter' as UserRole };
     const mockToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${btoa(JSON.stringify(demoPayload))}.signature`;
-    
-    setAuthState({ user: demoPayload, token: mockToken, isAuthenticated: true, isLoading: false });
+    const user: User = { uid: demoPayload.sub, email: demoPayload.email, role: demoPayload.role };
+    setAuthState({ user, token: mockToken, isAuthenticated: true, isLoading: false });
     sessionStorage.setItem('auth_token', mockToken);
   }, []);
 

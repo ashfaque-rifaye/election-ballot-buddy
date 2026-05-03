@@ -1,8 +1,43 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
 coverage/
+
+# Environment files (NEVER commit secrets)
 .env
+.env.local
+.env.*.local
+client/.env
+server/.env
+
+# Logs
 *.log
+npm-debug.log*
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Firebase
 .firebase/
+
+# Specs (internal)
 .specs/
+
+# IDE
+.vscode/settings.json
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Vite cache
+node_modules/.vite
+
+# Temporary deployment files
+env-vars.yaml
+
+# Token files
+*.txt.bak
+server/token.txt

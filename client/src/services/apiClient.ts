@@ -9,16 +9,10 @@ import { ChatResponse, Milestone, CalendarReminderResponse } from '@shared/types
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
-/**
- * Get the auth token from session storage.
- */
 function getAuthToken(): string | null {
   return sessionStorage.getItem('auth_token');
 }
 
-/**
- * Make an authenticated API request.
- */
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -42,25 +36,12 @@ async function apiRequest<T>(
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
     const message = errorData?.error?.message || `Request failed with status ${response.status}`;
-
-    if (response.status === 401) {
-      const token = getAuthToken();
-      if (token && !token.includes('.eyJzdWIiOiJkZW1vI')) {
-        sessionStorage.removeItem('auth_token');
-        window.location.href = '/';
-      }
-      throw new Error('Authentication failed. Please sign in again.');
-    }
-
     throw new Error(message);
   }
 
   return response.json();
 }
 
-/**
- * Send a chat message to the Election Assistant.
- */
 export async function sendMessage(
   message: string,
   sessionId: string
@@ -71,9 +52,6 @@ export async function sendMessage(
   });
 }
 
-/**
- * Get election timeline milestones.
- */
 export async function getTimeline(
   format: string = 'national'
 ): Promise<{ milestones: Milestone[] }> {
@@ -82,9 +60,6 @@ export async function getTimeline(
   );
 }
 
-/**
- * Get nearby polling stations.
- */
 export async function getPollingStations(
   location: string
 ): Promise<{ stations: Array<{ id: string; name: string; address: string; latitude: number; longitude: number }> }> {
@@ -93,9 +68,6 @@ export async function getPollingStations(
   );
 }
 
-/**
- * Create a Google Calendar reminder for a milestone.
- */
 export async function createReminder(
   milestone: Milestone
 ): Promise<CalendarReminderResponse> {

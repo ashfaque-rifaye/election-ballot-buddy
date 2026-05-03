@@ -133,6 +133,7 @@ export interface ChatRequest {
 export interface ChatResponse {
   response: string;
   cards?: Card[];
+  suggestions?: string[];
   sessionId: string;
 }
 
