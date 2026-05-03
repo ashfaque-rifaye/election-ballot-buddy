@@ -10,6 +10,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { authMiddleware } from './middleware/authMiddleware';
+import { requestLogger } from './middleware/requestLogger';
 import chatRouter from './routes/chatRouter';
 import timelineRouter from './routes/timelineRouter';
 import pollingRouter from './routes/pollingRouter';
@@ -20,7 +21,22 @@ const app = express();
 // ─── Security Middleware ─────────────────────────────────────────────────────
 
 // Helmet sets various HTTP headers for security
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://accounts.google.com', 'https://apis.google.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://accounts.google.com'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+      connectSrc: ["'self'", 'https://accounts.google.com', 'https://generativelanguage.googleapis.com', 'https://maps.googleapis.com'],
+      frameSrc: ['https://accounts.google.com'],
+    },
+  },
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  crossOriginEmbedderPolicy: false,
+}));
 
 // CORS configuration
 app.use(
@@ -50,6 +66,9 @@ app.use(limiter);
 // Body parsing
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Structured request logging
+app.use(requestLogger);
 
 // ─── Health Check ────────────────────────────────────────────────────────────
 

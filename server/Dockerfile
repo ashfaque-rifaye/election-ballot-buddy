@@ -38,4 +38,8 @@ USER appuser
 ENV PORT=8080
 EXPOSE 8080
 
+# Health check for container orchestration
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "fetch('http://localhost:8080/api/health').then(r=>{if(!r.ok)throw new Error();process.exit(0)}).catch(()=>process.exit(1))"
+
 CMD ["node", "dist/server/src/index.js"]
