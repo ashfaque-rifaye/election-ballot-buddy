@@ -2,7 +2,7 @@
  * FAQ Card - Indian Election Assistant
  * Built with Google Antigravity & Vertex AI
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FAQCard as FAQCardType } from '@shared/types';
 
 export default function FAQCard({ card }: { card: FAQCardType }) {

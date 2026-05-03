@@ -4,7 +4,6 @@
  *
  * **Validates: Requirements 6.3, 6.4, 6.5, 6.6**
  */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MessageBubble from '../MessageBubble';
 import { Message } from '@shared/types';

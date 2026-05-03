@@ -4,7 +4,6 @@
  *
  * **Validates: Requirements 6.6, 7.1, 7.2**
  */
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ReminderCard from '../ReminderCard';
 

@@ -4,7 +4,6 @@
  *
  * **Validates: Requirements 6.2, 7.2**
  */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import LoadingIndicator from '../LoadingIndicator';
 

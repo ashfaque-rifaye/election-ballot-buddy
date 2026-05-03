@@ -4,7 +4,6 @@
  *
  * **Validates: Requirements 6.4, 7.1, 7.2**
  */
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import FAQCard from '../FAQCard';
 

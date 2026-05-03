@@ -4,7 +4,6 @@
  *
  * **Validates: Requirements 4.3, 6.5, 7.2**
  */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PollingLocationCard from '../PollingLocationCard';
 

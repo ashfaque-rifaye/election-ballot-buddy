@@ -5,7 +5,7 @@
  * Provides Google Sign-In integration for user authentication.
  * Handles auth success/failure with appropriate feedback.
  */
-import React, { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
